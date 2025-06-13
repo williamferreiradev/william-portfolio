@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - William Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f23;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .admin-header {
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        /* Login Section */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        .login-box {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 3rem;
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(15, 15, 35, 0.8);
+            color: #ffffff;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Admin Dashboard */
+        .admin-dashboard {
+            display: none;
+        }
+
+        .admin-dashboard.active {
+            display: block;
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: #a0a0a0;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .tab-btn.active,
+        .tab-btn:hover {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .admin-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-card h3 {
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Content Editor */
+        .content-editor {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .field-group {
+            background: rgba(15, 15, 35, 0.6);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .field-path {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+            margin-bottom: 1rem;
+        }
+
+        /* Projects Management */
+        .projects-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .project-item {
+            background: rgba(15, 15, 35, 0.6);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .project-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .project-info h4 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-info .category {
+            color: #667eea;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-info .description {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Color Picker */
+        .color-picker {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .color-input {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .color-input input[type="color"] {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 100px;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Image Manager */
+        .image-section {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .image-upload-area {
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .image-upload-area:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .image-upload-area input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .image-preview {
+            width: 200px;
+            height: 200px;
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 13px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h3 {
+            color: #ffffff;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #a0a0a0;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #667eea;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 15, 35, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .dashboard-tabs {
+                flex-wrap: wrap;
+            }
+
+            .project-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-nav">
+                <div class="admin-logo">🎛️ Admin Panel - William Portfolio</div>
+                <div class="admin-user" id="adminUser" style="display: none;">
+                    <span>william.ferreira.web@gmail.com</span>
+                    <button class="btn btn-secondary" onclick="viewSite()">Ver Site</button>
+                    <button class="btn btn-danger" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <div class="login-container" id="loginSection">
+        <div class="login-box">
+            <h2>🔐 Login Admin</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="error" id="loginError" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard">
+        <div class="container">
+            <!-- Dashboard Tabs -->
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="switchTab('overview')">📊 Overview</button>
+                <button class="tab-btn" onclick="switchTab('content')">✏️ Conteúdo</button>
+                <button class="tab-btn" onclick="switchTab('projects')">🚀 Projetos</button>
+                <button class="tab-btn" onclick="switchTab('images')">🖼️ Imagens</button>
+                <button class="tab-btn" onclick="switchTab('colors')">🎨 Cores</button>
+                <button class="tab-btn" onclick="switchTab('settings')">⚙️ Configurações</button>
+            </div>
+
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="overviewTab">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="projectCount">0</div>
+                        <div class="stat-label">Projetos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="lastUpdate">-</div>
+                        <div class="stat-label">Última Atualização</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="imageCount">0</div>
+                        <div class="stat-label">Imagens</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Status</div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h3>🚀 Ações Rápidas</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="switchTab('projects'); showAddProject();">Adicionar Projeto</button>
+                        <button class="btn btn-secondary" onclick="switchTab('content')">Editar Conteúdo</button>
+                        <button class="btn btn-secondary" onclick="switchTab('images')">Gerenciar Imagens</button>
+                        <button class="btn btn-secondary" onclick="viewSite()">Ver Site</button>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h3>📈 Últimas Atividades</h3>
+                    <div id="recentActivities">
+                        <p style="color: #a0a0a0;">Nenhuma atividade recente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Tab -->
+            <div class="tab-content" id="contentTab">
+                <div class="admin-card">
+                    <h3>✏️ Editor de Conteúdo</h3>
+                    <div class="content-editor" id="contentEditor">
+                        <!-- Content fields will be loaded here -->
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <button class="btn btn-primary" onclick="saveContent()">💾 Salvar Alterações</button>
+                        <button class="btn btn-secondary" onclick="loadContent()">🔄 Restaurar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Tab -->
+            <div class="tab-content" id="projectsTab">
+                <div class="admin-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3>🚀 Gerenciar Projetos</h3>
+                        <button class="btn btn-primary" onclick="showAddProject()">➕ Novo Projeto</button>
+                    </div>
+                    <div class="projects-list" id="projectsList">
+                        <!-- Projects will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Images Tab -->
+            <div class="tab-content" id="imagesTab">
+                <div class="card-grid">
+                    <div class="admin-card">
+                        <h3>🖼️ Foto do Hero</h3>
+                        <div class="image-upload-area" onclick="document.getElementById('heroImageInput').click()">
+                            <input type="file" id="heroImageInput" accept="image/*" onchange="handleImageUpload(event, 'hero')">
+                            <div>📷 Clique para adicionar/alterar</div>
+                            <small style="color: #a0a0a0;">Recomendado: 400x500px</small>
+                        </div>
+                        <div class="image-preview" id="heroImagePreview">
+                            <span style="color: #a0a0a0;">Nenhuma imagem</span>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>🖼️ Foto do Sobre</h3>
+                        <div class="image-upload-area" onclick="document.getElementById('aboutImageInput').click()">
+                            <input type="file" id="aboutImageInput" accept="image/*" onchange="handleImageUpload(event, 'about')">
+                            <div>📷 Clique para adicionar/alterar</div>
+                            <small style="color: #a0a0a0;">Recomendado: 400x500px</small>
+                        </div>
+                        <div class="image-preview" id="aboutImagePreview">
+                            <span style="color: #a0a0a0;">Nenhuma imagem</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colors Tab -->
+            <div class="tab-content" id="colorsTab">
+                <div class="admin-card">
+                    <h3>🎨 Personalizar Cores</h3>
+                    <div class="color-picker">
+                        <div class="color-input">
+                            <label for="primaryColor">Cor Primária:</label>
+                            <input type="color" id="primaryColor" value="#667eea" onchange="updateColors()">
+                            <span id="primaryColorValue">#667eea</span>
+                        </div>
+                        <div class="color-input">
+                            <label for="secondaryColor">Cor Secundária:</label>
+                            <input type="color" id="secondaryColor" value="#764ba2" onchange="updateColors()">
+                            <span id="secondaryColorValue">#764ba2</span>
+                        </div>
+                        <div class="color-preview" id="colorPreview">
+                            Prévia das Cores
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <button class="btn btn-primary" onclick="saveColors()">💾 Salvar Cores</button>
+                            <button class="btn btn-secondary" onclick="resetColors()">🔄 Restaurar Padrão</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settingsTab">
+                <div class="admin-card">
+                    <h3>⚙️ Configurações do Sistema</h3>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <div>
+                            <button class="btn btn-secondary" onclick="exportData()">📤 Exportar Dados</button>
+                            <p style="color: #a0a0a0; font-size: 0.9rem; margin-top: 0.5rem;">Baixar backup de todos os dados</p>
+                        </div>
+                        <div>
+                            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                            <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📥 Importar Dados</button>
+                            <p style="color: #a0a0a0; font-size: 0.9rem; margin-top: 0.5rem;">Restaurar dados de backup</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-danger" onclick="clearAllData()">🗑️ Limpar Todos os Dados</button>
+                            <p style="color: #dc3545; font-size: 0.9rem; margin-top: 0.5rem;">⚠️ Esta ação não pode ser desfeita!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="projectModalTitle">Adicionar Projeto</h3>
+                <button class="close-btn" onclick="closeModal('projectModal')">&times;</button>
+            </div>
+            <form id="projectForm">
+                <input type="hidden" id="projectId">
+                <div class="form-group">
+                    <label for="projectTitle">Título</label>
+                    <input type="text" id="projectTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectCategory">Categoria</label>
+                    <select id="projectCategory" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="aplicativo">Aplicativo</option>
+                        <option value="automacao">Automação</option>
+                        <option value="microsaas">MicroSaas</option>
+                        <option value="web">Web</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription">Descrição</label>
+                    <textarea id="projectDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectLink">Link (opcional)</label>
+                    <input type="url" id="projectLink">
+                </div>
+                <div class="form-group">
+                    <label for="projectLogo">Logo (Emoji ou texto)</label>
+                    <input type="text" id="projectLogo" placeholder="🚀 ou texto">
+                </div>
+                <div class="form-group">
+                    <label for="projectImages">Imagens do Projeto (até 3)</label>
+                    <input type="file" id="projectImages" multiple accept="image/*" onchange="handleProjectImages(event)">
+                    <div id="projectImagesPreview" style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">💾 Salvar Projeto</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const ADMIN_CREDENTIALS = {
+            email: 'william.ferreira.web@gmail.com',
+            password: 'Williamfer234@'
+        };
+
+        // State
+        let isLoggedIn = false;
+        let currentProjectEdit = null;
+        let projectImages = [];
+
+        // Default data structure
+        const defaultContent = {
+            hero: {
+                title: "Olá, eu sou William",
+                subtitle: "Desenvolvedor Web & Especialista em Inteligência Artificial com mais de 6 anos de experiência criando soluções tecnológicas inovadoras e automatizações inteligentes.",
+                cta1: "Fale Comigo",
+                cta2: "Meus Projetos"
+            },
+            about: {
+                description1: "Sou William, tenho 22 anos e trabalho com desenvolvimento web há mais de 6 anos. Minha paixão pela tecnologia me levou a fundar a Data impetus, uma empresa de desenvolvimento de software com mais de 4 anos no mercado.",
+                description2: "Atualmente, estou expandindo meus horizontes com a Data Flow, uma agência especializada em automatizações com inteligência artificial. Desenvolvemos soluções que revolucionam o atendimento ao cliente com chatbots inteligentes e fluxos de trabalho automatizados, permitindo qualificação de leads e integração com CRM de forma totalmente personalizada."
+            },
+            stats: {
+                experience: "6+",
+                experienceLabel: "Anos de Experiência",
+                projects: "100+",
+                projectsLabel: "Projetos Concluídos",
+                companies: "2",
+                companiesLabel: "Empresas Fundadas",
+                clients: "50+",
+                clientsLabel: "Clientes Satisfeitos"
+            },
+            services: {
+                web: {
+                    title: "Desenvolvimento Web",
+                    description: "Criação de sites, aplicações web e e-commerce com tecnologias modernas e design responsivo para proporcionar a melhor experiência aos usuários.",
+                    cta: "Saiba Mais"
+                },
+                ai: {
+                    title: "Automação com IA",
+                    description: "Desenvolvimento de chatbots inteligentes e fluxos de atendimento automatizados com IA que entendem linguagem natural, imagens e documentos.",
+                    cta: "Saiba Mais"
+                },
+                apps: {
+                    title: "Aplicativos Personalizados",
+                    description: "Criação de aplicativos móveis e sistemas personalizados que atendem às necessidades específicas do seu negócio com design moderno e funcional.",
+                    cta: "Saiba Mais"
+                }
+            },
+            contact: {
+                title: "Vamos Conversar",
+                description: "Estou interessado em novos projetos de desenvolvimento web, automatização com IA e criação de sistemas personalizados. Se você tem uma ideia ou projeto em mente, entre em contato para discutirmos como posso ajudar a transformá-la em realidade.",
+                email: "william.ferreira.web@gmail.com",
+                phone: "+55 (61) 99554-3298",
+                location: "Brasília, DF - Brasil"
+            }
+        };
+
+        // Initialize app
+        function initApp() {
+            checkLoginStatus();
+            loadOverviewData();
+            updateColors();
+        }
+
+        // Authentication
+        function checkLoginStatus() {
+            const saved = localStorage.getItem('adminLoggedIn');
+            if (saved === 'true') {
+                showDashboard();
+            }
+        }
+
+        function login(email, password) {
+            if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+                isLoggedIn = true;
+                localStorage.setItem('adminLoggedIn', 'true');
+                logActivity('Login realizado');
+                showDashboard();
+                return true;
+            }
+            return false;
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            localStorage.removeItem('adminLoggedIn');
+            location.reload();
+        }
+
+        function showDashboard() {
+            isLoggedIn = true;
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminDashboard').classList.add('active');
+            document.getElementById('adminUser').style.display = 'flex';
+            loadContent();
+            loadProjects();
+            loadImages();
+            loadOverviewData();
+        }
+
+        function viewSite() {
+            window.open('./index.html', '_blank');
+        }
+
+        // Tab management
+        function switchTab(tabName) {
+            // Remove active from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active to selected
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Load specific tab data
+            if (tabName === 'projects') loadProjects();
+            if (tabName === 'images') loadImages();
+            if (tabName === 'overview') loadOverviewData();
+        }
+
+        // Overview data
+        function loadOverviewData() {
+            const data = getPortfolioData();
+            const projects = data.projects || [];
+            
+            document.getElementById('projectCount').textContent = projects.length;
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('pt-BR');
+            
+            let imageCount = 0;
+            if (localStorage.getItem('heroImage')) imageCount++;
+            if (localStorage.getItem('aboutImage')) imageCount++;
+            projects.forEach(p => {
+                if (p.images && p.images.length > 0) imageCount += p.images.length;
+            });
+            document.getElementById('imageCount').textContent = imageCount;
+        }
+
+        // Content management
+        function loadContent() {
+            const data = getPortfolioData();
+            const content = data.content || defaultContent;
+            const editor = document.getElementById('contentEditor');
+            
+            editor.innerHTML = '';
+            createContentFields(content, '', editor);
+        }
+
+        function createContentFields(obj, prefix, container) {
+            for (const [key, value] of Object.entries(obj)) {
+                const fieldPath = prefix ? `${prefix}.${key}` : key;
+                
+                if (typeof value === 'object' && value !== null) {
+                    const fieldGroup = document.createElement('div');
+                    fieldGroup.className = 'field-group';
+                    fieldGroup.innerHTML = `<h4 style="color: #667eea; margin-bottom: 1rem;">${key.toUpperCase()}</h4>`;
+                    createContentFields(value, fieldPath, fieldGroup);
+                    container.appendChild(fieldGroup);
+                } else {
+                    const fieldGroup = document.createElement('div');
+                    fieldGroup.className = 'field-group';
+                    fieldGroup.innerHTML = `
+                        <label class="field-label">${key}</label>
+                        <div class="field-path">${fieldPath}</div>
+                        ${value.length > 50 ? 
+                            `<textarea data-field="${fieldPath}" rows="3">${value}</textarea>` :
+                            `<input type="text" data-field="${fieldPath}" value="${value}">`
+                        }
+                    `;
+                    container.appendChild(fieldGroup);
+                }
+            }
+        }
+
+        function saveContent() {
+            const data = getPortfolioData();
+            const content = {};
+            
+            document.querySelectorAll('[data-field]').forEach(input => {
+                const field = input.dataset.field;
+                const keys = field.split('.');
+                let obj = content;
+                
+                for (let i = 0; i < keys.length - 1; i++) {
+                    if (!obj[keys[i]]) obj[keys[i]] = {};
+                    obj = obj[keys[i]];
+                }
+                
+                obj[keys[keys.length - 1]] = input.value;
+            });
+            
+            data.content = content;
+            savePortfolioData(data);
+            logActivity('Conteúdo atualizado');
+            alert('✅ Conteúdo salvo com sucesso!');
+        }
+
+        // Projects management
+        function loadProjects() {
+            const data = getPortfolioData();
+            const projects = data.projects || [];
+            const list = document.getElementById('projectsList');
+            
+            list.innerHTML = projects.map(project => `
+                <div class="project-item">
+                    <div class="project-logo">
+                        ${project.images && project.images.length > 0 ? 
+                            `<img src="${project.images[0]}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">` :
+                            project.logo || '🚀'
+                        }
+                    </div>
+                    <div class="project-info">
+                        <h4>${project.title}</h4>
+                        <div class="category">${project.category}</div>
+                        <div class="description">${project.description}</div>
+                        ${project.link ? `<a href="${project.link}" target="_blank" style="color: #667eea; font-size: 0.9rem;">🔗 Ver projeto</a>` : ''}
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-secondary" onclick="editProject(${project.id})">✏️</button>
+                        <button class="btn btn-danger" onclick="deleteProject(${project.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddProject() {
+            currentProjectEdit = null;
+            document.getElementById('projectModalTitle').textContent = 'Adicionar Projeto';
+            document.getElementById('projectForm').reset();
+            document.getElementById('projectId').value = '';
+            document.getElementById('projectImagesPreview').innerHTML = '';
+            projectImages = [];
+            showModal('projectModal');
+        }
+
+        function editProject(id) {
+            const data = getPortfolioData();
+            const projects = data.projects || [];
+            const project = projects.find(p => p.id === id);
+            if (!project) return;
+
+            currentProjectEdit = project;
+            document.getElementById('projectModalTitle').textContent = 'Editar Projeto';
+            document.getElementById('projectId').value = project.id;
+            document.getElementById('projectTitle').value = project.title;
+            document.getElementById('projectCategory').value = project.category;
+            document.getElementById('projectDescription').value = project.description;
+            document.getElementById('projectLink').value = project.link || '';
+            document.getElementById('projectLogo').value = project.logo || '';
+            
+            projectImages = project.images || [];
+            const preview = document.getElementById('projectImagesPreview');
+            preview.innerHTML = '';
+            
+            projectImages.forEach(image => {
+                const img = document.createElement('img');
+                img.src = image;
+                img.style.cssText = 'width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid #667eea;';
+                preview.appendChild(img);
+            });
+            
+            showModal('projectModal');
+        }
+
+        function deleteProject(id) {
+            if (!confirm('🗑️ Tem certeza que deseja excluir este projeto?')) return;
+            
+            const data = getPortfolioData();
+            const projects = data.projects || [];
+            data.projects = projects.filter(p => p.id !== id);
+            savePortfolioData(data);
+            logActivity('Projeto excluído');
+            loadProjects();
+            loadOverviewData();
+        }
+
+        function handleProjectImages(event) {
+            const files = Array.from(event.target.files);
+            if (files.length > 3) {
+                alert('⚠️ Máximo de 3 imagens permitidas');
+                return;
+            }
+
+            projectImages = [];
+            const preview = document.getElementById('projectImagesPreview');
+            preview.innerHTML = '';
+
+            files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    projectImages.push(e.target.result);
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.cssText = 'width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid #667eea;';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Image management
+        function loadImages() {
+            const heroImage = localStorage.getItem('heroImage');
+            const aboutImage = localStorage.getItem('aboutImage');
+            
+            if (heroImage) {
+                document.getElementById('heroImagePreview').innerHTML = `<img src="${heroImage}" alt="Hero Image">`;
+            }
+            
+            if (aboutImage) {
+                document.getElementById('aboutImagePreview').innerHTML = `<img src="${aboutImage}" alt="About Image">`;
+            }
+        }
+
+        function handleImageUpload(event, type) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    localStorage.setItem(`${type}Image`, imageData);
+                    logActivity(`Imagem ${type} atualizada`);
+                    loadImages();
+                    loadOverviewData();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Color management
+        function updateColors() {
+            const primary = document.getElementById('primaryColor').value;
+            const secondary = document.getElementById('secondaryColor').value;
+            
+            document.getElementById('primaryColorValue').textContent = primary;
+            document.getElementById('secondaryColorValue').textContent = secondary;
+            
+            const preview = document.getElementById('colorPreview');
+            preview.style.background = `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`;
+        }
+
+        function saveColors() {
+            const colors = {
+                primary: document.getElementById('primaryColor').value,
+                secondary: document.getElementById('secondaryColor').value
+            };
+            
+            const data = getPortfolioData();
+            data.colors = colors;
+            savePortfolioData(data);
+            logActivity('Cores atualizadas');
+            alert('🎨 Cores salvas com sucesso!');
+        }
+
+        function resetColors() {
+            document.getElementById('primaryColor').value = '#667eea';
+            document.getElementById('secondaryColor').value = '#764ba2';
+            updateColors();
+            saveColors();
+        }
+
+        // Data management
+        function getPortfolioData() {
+            return JSON.parse(localStorage.getItem('portfolioData') || '{}');
+        }
+
+        function savePortfolioData(data) {
+            localStorage.setItem('portfolioData', JSON.stringify(data));
+            localStorage.setItem('lastUpdate', new Date().toISOString());
+        }
+
+        function exportData() {
+            const data = {
+                portfolio: getPortfolioData(),
+                images: {
+                    hero: localStorage.getItem('heroImage'),
+                    about: localStorage.getItem('aboutImage')
+                },
+                metadata: {
+                    exportDate: new Date().toISOString(),
+                    version: '1.0'
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            logActivity('Dados exportados');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.portfolio) {
+                        savePortfolioData(data.portfolio);
+                    }
+                    
+                    if (data.images) {
+                        if (data.images.hero) localStorage.setItem('heroImage', data.images.hero);
+                        if (data.images.about) localStorage.setItem('aboutImage', data.images.about);
+                    }
+                    
+                    logActivity('Dados importados');
+                    alert('✅ Dados importados com sucesso!');
+                    location.reload();
+                } catch (error) {
+                    alert('❌ Erro ao importar dados. Verifique o arquivo.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllData() {
+            if (!confirm('🗑️ TEM CERTEZA? Esta ação irá apagar TODOS os dados e NÃO pode ser desfeita!')) return;
+            if (!confirm('⚠️ ÚLTIMA CONFIRMAÇÃO: Todos os projetos, imagens e configurações serão perdidos!')) return;
+            
+            localStorage.clear();
+            alert('🗑️ Todos os dados foram removidos.');
+            location.reload();
+        }
+
+        function logActivity(activity) {
+            const activities = JSON.parse(localStorage.getItem('recentActivities') || '[]');
+            activities.unshift({
+                action: activity,
+                timestamp: new Date().toLocaleString('pt-BR')
+            });
+            activities.splice(10); // Keep only last 10
+            localStorage.setItem('recentActivities', JSON.stringify(activities));
+            
+            const container = document.getElementById('recentActivities');
+            if (activities.length > 0) {
+                container.innerHTML = activities.map(a => 
+                    `<div style="padding: 0.5rem 0; border-bottom: 1px solid rgba(102, 126, 234, 0.1);">
+                        <strong>${a.action}</strong> - <small style="color: #a0a0a0;">${a.timestamp}</small>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        // Modal management
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+            
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const errorEl = document.getElementById('loginError');
+                
+                if (login(email, password)) {
+                    errorEl.style.display = 'none';
+                } else {
+                    errorEl.textContent = '❌ Credenciais inválidas!';
+                    errorEl.style.display = 'block';
+                }
+            });
+            
+            // Project form
+            document.getElementById('projectForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const projectData = {
+                    id: document.getElementById('projectId').value || Date.now(),
+                    title: document.getElementById('projectTitle').value,
+                    category: document.getElementById('projectCategory').value,
+                    description: document.getElementById('projectDescription').value,
+                    link: document.getElementById('projectLink').value,
+                    logo: document.getElementById('projectLogo').value || '🚀',
+                    images: projectImages
+                };
+
+                const data = getPortfolioData();
+                const projects = data.projects || [];
+                
+                if (currentProjectEdit) {
+                    const index = projects.findIndex(p => p.id == projectData.id);
+                    if (index !== -1) projects[index] = projectData;
+                    logActivity('Projeto editado');
+                } else {
+                    projects.push(projectData);
+                    logActivity('Projeto adicionado');
+                }
+                
+                data.projects = projects;
+                savePortfolioData(data);
+                closeModal('projectModal');
+                loadProjects();
+                loadOverviewData();
+                alert('✅ Projeto salvo com sucesso!');
+            });
+            
+            // Color inputs
+            document.getElementById('primaryColor').addEventListener('change', updateColors);
+            document.getElementById('secondaryColor').addEventListener('change', updateColors);
+        });
+    </script>
+</body>
+</html>

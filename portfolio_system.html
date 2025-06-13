@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>William Ferreira - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #0f0f23;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #0f0f23;
+            color: white;
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 1s forwards;
+        }
+
+        .hero-text h1 .highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: #a0a0a0;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 1s 0.3s forwards;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s 0.6s forwards;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            width: 400px;
+            height: 500px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInRight 1s 0.8s forwards;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 22px;
+            z-index: -1;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+            background: #0f0f23;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about {
+            background: #1a1a2e;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 23px;
+            z-index: -1;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #a0a0a0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(15, 15, 35, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            transform: translateY(0);
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Services Section */
+        .services {
+            background: #0f0f23;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: #a0a0a0;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* Skills Section */
+        .skills {
+            background: #1a1a2e;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .skill-category {
+            background: rgba(15, 15, 35, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .skill-category h3 {
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            font-size: 1.3rem;
+        }
+
+        .skill-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .skill-percentage {
+            color: #667eea;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Projects Section */
+        .projects {
+            background: #0f0f23;
+        }
+
+        .project-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            color: #ffffff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .project-category {
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .project-description {
+            color: #a0a0a0;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: #1a1a2e;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .contact-info p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: #a0a0a0;
+        }
+
+        .contact-details {
+            list-style: none;
+        }
+
+        .contact-details li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #a0a0a0;
+        }
+
+        .contact-details li span:first-child {
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            background: rgba(15, 15, 35, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(26, 26, 46, 0.5);
+            color: #ffffff;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f0f23;
+            color: #a0a0a0;
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h3 {
+            color: #ffffff;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #a0a0a0;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #667eea;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-image {
+                width: 300px;
+                height: 400px;
+                margin: 0 auto;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-image {
+                width: 300px;
+                height: 400px;
+                margin: 0 auto;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Image upload styles */
+        .image-upload {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .image-upload:hover {
+            opacity: 0.8;
+        }
+
+        .image-upload.editable::after {
+            content: '📷 Clique para trocar foto';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .image-upload.editable:hover::after {
+            opacity: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">William</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#skills">Habilidades</a></li>
+                <li><a href="#projects">Projetos</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="editable" data-field="hero.title">Olá, eu sou <span class="highlight">William</span></h1>
+                    <p class="editable" data-field="hero.subtitle">Desenvolvedor Web & Especialista em Inteligência Artificial com mais de 6 anos de experiência criando soluções tecnológicas inovadoras e automatizações inteligentes.</p>
+                    <div class="cta-buttons">
+                        <a href="#contact" class="btn btn-primary editable" data-field="hero.cta1">Fale Comigo</a>
+                        <a href="#projects" class="btn btn-secondary editable" data-field="hero.cta2">Meus Projetos</a>
+                    </div>
+                </div>
+                <div class="hero-image image-upload" id="heroImage">
+                    <img id="heroImg" src="" alt="William Ferreira" style="display: none;">
+                    <div id="heroPlaceholder">
+                        📷<br>Sua foto aqui<br><small>Clique para adicionar</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Quem sou eu</h2>
+            <div class="about-content">
+                <div class="about-image image-upload" id="aboutImage">
+                    <img id="aboutImg" src="" alt="William Ferreira" style="display: none;">
+                    <div id="aboutPlaceholder">
+                        📷<br>Sua foto aqui<br><small>Clique para adicionar</small>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p class="editable" data-field="about.description1">Sou William, tenho 22 anos e trabalho com desenvolvimento web há mais de 6 anos. Minha paixão pela tecnologia me levou a fundar a Data impetus, uma empresa de desenvolvimento de software com mais de 4 anos no mercado.</p>
+                    <p class="editable" data-field="about.description2">Atualmente, estou expandindo meus horizontes com a Data Flow, uma agência especializada em automatizações com inteligência artificial. Desenvolvemos soluções que revolucionam o atendimento ao cliente com chatbots inteligentes e fluxos de trabalho automatizados, permitindo qualificação de leads e integração com CRM de forma totalmente personalizada.</p>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number editable" data-field="stats.experience">6+</span>
+                            <div class="stat-label editable" data-field="stats.experienceLabel">Anos de Experiência</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number editable" data-field="stats.projects">100+</span>
+                            <div class="stat-label editable" data-field="stats.projectsLabel">Projetos Concluídos</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number editable" data-field="stats.companies">2</span>
+                            <div class="stat-label editable" data-field="stats.companiesLabel">Empresas Fundadas</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number editable" data-field="stats.clients">50+</span>
+                            <div class="stat-label editable" data-field="stats.clientsLabel">Clientes Satisfeitos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">SERVIÇOS</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🌐</div>
+                    <h3 class="editable" data-field="services.web.title">Desenvolvimento Web</h3>
+                    <p class="editable" data-field="services.web.description">Criação de sites, aplicações web e e-commerce com tecnologias modernas e design responsivo para proporcionar a melhor experiência aos usuários.</p>
+                    <a href="#contact" class="btn btn-primary editable" data-field="services.web.cta">Saiba Mais</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🤖</div>
+                    <h3 class="editable" data-field="services.ai.title">Automação com IA</h3>
+                    <p class="editable" data-field="services.ai.description">Desenvolvimento de chatbots inteligentes e fluxos de atendimento automatizados com IA que entendem linguagem natural, imagens e documentos.</p>
+                    <a href="#contact" class="btn btn-primary editable" data-field="services.ai.cta">Saiba Mais</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3 class="editable" data-field="services.apps.title">Aplicativos Personalizados</h3>
+                    <p class="editable" data-field="services.apps.description">Criação de aplicativos móveis e sistemas personalizados que atendem às necessidades específicas do seu negócio com design moderno e funcional.</p>
+                    <a href="#contact" class="btn btn-primary editable" data-field="services.apps.cta">Saiba Mais</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">HABILIDADES</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Desenvolvimento Web</h3>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>React/Vue.js</span>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Node.js</span>
+                            <span class="skill-percentage">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>No-Code & Low-Code</h3>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Bubble</span>
+                            <span class="skill-percentage">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>FlutterFlow</span>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>N8N</span>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Supabase</span>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Inteligência Artificial</h3>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>ChatGPT/LLMs</span>
+                            <span class="skill-percentage">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Prompting Avançado</span>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Automação com IA</span>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Integração com APIs de IA</span>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">PROJETOS</h2>
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="aplicativo">Aplicativos</button>
+                <button class="filter-btn" data-filter="automacao">Automação</button>
+                <button class="filter-btn" data-filter="microsaas">MicroSaas</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+            </div>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">CONTATO</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3 class="editable" data-field="contact.title">Vamos Conversar</h3>
+                    <p class="editable" data-field="contact.description">Estou interessado em novos projetos de desenvolvimento web, automatização com IA e criação de sistemas personalizados. Se você tem uma ideia ou projeto em mente, entre em contato para discutirmos como posso ajudar a transformá-la em realidade.</p>
+                    <ul class="contact-details">
+                        <li>
+                            <span>📧</span>
+                            <span class="editable" data-field="contact.email">william.ferreira.web@gmail.com</span>
+                        </li>
+                        <li>
+                            <span>📱</span>
+                            <span class="editable" data-field="contact.phone">+55 (61) 99554-3298</span>
+                        </li>
+                        <li>
+                            <span>📍</span>
+                            <span class="editable" data-field="contact.location">Brasília, DF - Brasil</span>
+                        </li>
+                    </ul>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Assunto</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mensagem</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 William Ferreira. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Add/Edit Project Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="projectModalTitle">Adicionar Projeto</h3>
+                <button class="close-btn" onclick="closeModal('projectModal')">&times;</button>
+            </div>
+            <form id="projectForm">
+                <input type="hidden" id="projectId">
+                <div class="form-group">
+                    <label for="projectTitle">Título</label>
+                    <input type="text" id="projectTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectCategory">Categoria</label>
+                    <select id="projectCategory" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="aplicativo">Aplicativo</option>
+                        <option value="automacao">Automação</option>
+                        <option value="microsaas">MicroSaas</option>
+                        <option value="web">Web</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription">Descrição</label>
+                    <textarea id="projectDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectLink">Link (opcional)</label>
+                    <input type="url" id="projectLink">
+                </div>
+                <div class="form-group">
+                    <label for="projectLogo">Logo (Emoji ou texto)</label>
+                    <input type="text" id="projectLogo" placeholder="🚀 ou texto">
+                </div>
+                <div class="form-group">
+                    <label for="projectImages">Imagens do Projeto (até 3)</label>
+                    <input type="file" id="projectImages" multiple accept="image/*" onchange="handleProjectImages(event)">
+                    <div id="projectImagesPreview" style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Projeto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden file inputs for hero and about images -->
+    <input type="file" id="heroImageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'hero')">
+    <input type="file" id="aboutImageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'about')">
+
+    <script>
+        // Configuration
+        const ADMIN_URL = './admin.html';
+
+        // State management
+        let currentProjectEdit = null;
+        let projectImages = [];
+
+        // Default data
+        const defaultData = {
+            content: {
+                hero: {
+                    title: "Olá, eu sou William",
+                    subtitle: "Desenvolvedor Web & Especialista em Inteligência Artificial com mais de 6 anos de experiência criando soluções tecnológicas inovadoras e automatizações inteligentes.",
+                    cta1: "Fale Comigo",
+                    cta2: "Meus Projetos",
+                    image: ""
+                },
+                about: {
+                    description1: "Sou William, tenho 22 anos e trabalho com desenvolvimento web há mais de 6 anos. Minha paixão pela tecnologia me levou a fundar a Data impetus, uma empresa de desenvolvimento de software com mais de 4 anos no mercado.",
+                    description2: "Atualmente, estou expandindo meus horizontes com a Data Flow, uma agência especializada em automatizações com inteligência artificial. Desenvolvemos soluções que revolucionam o atendimento ao cliente com chatbots inteligentes e fluxos de trabalho automatizados, permitindo qualificação de leads e integração com CRM de forma totalmente personalizada.",
+                    image: ""
+                },
+                stats: {
+                    experience: "6+",
+                    experienceLabel: "Anos de Experiência",
+                    projects: "100+",
+                    projectsLabel: "Projetos Concluídos",
+                    companies: "2",
+                    companiesLabel: "Empresas Fundadas",
+                    clients: "50+",
+                    clientsLabel: "Clientes Satisfeitos"
+                },
+                services: {
+                    web: {
+                        title: "Desenvolvimento Web",
+                        description: "Criação de sites, aplicações web e e-commerce com tecnologias modernas e design responsivo para proporcionar a melhor experiência aos usuários.",
+                        cta: "Saiba Mais"
+                    },
+                    ai: {
+                        title: "Automação com IA",
+                        description: "Desenvolvimento de chatbots inteligentes e fluxos de atendimento automatizados com IA que entendem linguagem natural, imagens e documentos.",
+                        cta: "Saiba Mais"
+                    },
+                    apps: {
+                        title: "Aplicativos Personalizados",
+                        description: "Criação de aplicativos móveis e sistemas personalizados que atendem às necessidades específicas do seu negócio com design moderno e funcional.",
+                        cta: "Saiba Mais"
+                    }
+                },
+                contact: {
+                    title: "Vamos Conversar",
+                    description: "Estou interessado em novos projetos de desenvolvimento web, automatização com IA e criação de sistemas personalizados. Se você tem uma ideia ou projeto em mente, entre em contato para discutirmos como posso ajudar a transformá-la em realidade.",
+                    email: "william.ferreira.web@gmail.com",
+                    phone: "+55 (61) 99554-3298",
+                    location: "Brasília, DF - Brasil"
+                }
+            },
+            projects: [
+                {
+                    id: 1,
+                    title: "Car Angel",
+                    category: "aplicativo",
+                    description: "Aplicativo para gestão de veículos com funcionalidades de monitoramento e manutenção.",
+                    link: "",
+                    logo: "🚗",
+                    images: []
+                },
+                {
+                    id: 2,
+                    title: "Microsaas financeiro com IA",
+                    category: "automacao",
+                    description: "Sistema de gestão financeira com inteligência artificial para análise de dados.",
+                    link: "",
+                    logo: "💰",
+                    images: []
+                },
+                {
+                    id: 3,
+                    title: "Sistema Wavmaster",
+                    category: "web",
+                    description: "Plataforma web para gestão de projetos e equipes.",
+                    link: "",
+                    logo: "🌊",
+                    images: []
+                },
+                {
+                    id: 4,
+                    title: "Sistema de Análise de Dados",
+                    category: "microsaas",
+                    description: "Ferramenta para análise avançada de dados com IA.",
+                    link: "",
+                    logo: "📊",
+                    images: []
+                },
+                {
+                    id: 5,
+                    title: "Automação de Marketing",
+                    category: "automacao",
+                    description: "Sistema de automação para campanhas de marketing digital.",
+                    link: "",
+                    logo: "📈",
+                    images: []
+                },
+                {
+                    id: 6,
+                    title: "Wavmaster",
+                    category: "web",
+                    description: "Desenvolvimento web completo com design moderno.",
+                    link: "",
+                    logo: "🌐",
+                    images: []
+                }
+            ],
+            colors: {
+                primary: "#667eea",
+                secondary: "#764ba2"
+            }
+        };
+
+        // Initialize app
+        function initApp() {
+            loadData();
+            renderProjects();
+            setupEventListeners();
+            loadImages();
+        }
+
+        // Data management
+        function loadData() {
+            const savedData = localStorage.getItem('portfolioData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                updateContentFromData(data.content || defaultData.content);
+            }
+        }
+
+        function saveData() {
+            const data = {
+                content: getCurrentContent(),
+                projects: getProjects(),
+                colors: getCurrentColors()
+            };
+            localStorage.setItem('portfolioData', JSON.stringify(data));
+        }
+
+        function getCurrentContent() {
+            const content = {};
+            document.querySelectorAll('.editable').forEach(el => {
+                const field = el.dataset.field;
+                if (field) {
+                    const keys = field.split('.');
+                    let obj = content;
+                    for (let i = 0; i < keys.length - 1; i++) {
+                        if (!obj[keys[i]]) obj[keys[i]] = {};
+                        obj = obj[keys[i]];
+                    }
+                    obj[keys[keys.length - 1]] = el.textContent;
+                }
+            });
+            return content;
+        }
+
+        function updateContentFromData(content) {
+            document.querySelectorAll('.editable').forEach(el => {
+                const field = el.dataset.field;
+                if (field) {
+                    const value = getNestedValue(content, field);
+                    if (value) el.textContent = value;
+                }
+            });
+        }
+
+        function getNestedValue(obj, path) {
+            return path.split('.').reduce((current, key) => current && current[key], obj);
+        }
+
+        function getCurrentColors() {
+            return {
+                primary: "#667eea",
+                secondary: "#764ba2"
+            };
+        }
+
+        // Image management
+        function loadImages() {
+            const heroImage = localStorage.getItem('heroImage');
+            const aboutImage = localStorage.getItem('aboutImage');
+            
+            if (heroImage) {
+                document.getElementById('heroImg').src = heroImage;
+                document.getElementById('heroImg').style.display = 'block';
+                document.getElementById('heroPlaceholder').style.display = 'none';
+            }
+            
+            if (aboutImage) {
+                document.getElementById('aboutImg').src = aboutImage;
+                document.getElementById('aboutImg').style.display = 'block';
+                document.getElementById('aboutPlaceholder').style.display = 'none';
+            }
+        }
+
+        function handleImageUpload(event, type) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    localStorage.setItem(`${type}Image`, imageData);
+                    
+                    const img = document.getElementById(`${type}Img`);
+                    const placeholder = document.getElementById(`${type}Placeholder`);
+                    
+                    img.src = imageData;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleProjectImages(event) {
+            const files = Array.from(event.target.files);
+            if (files.length > 3) {
+                alert('Máximo de 3 imagens permitidas');
+                return;
+            }
+
+            projectImages = [];
+            const preview = document.getElementById('projectImagesPreview');
+            preview.innerHTML = '';
+
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    projectImages.push(e.target.result);
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '80px';
+                    img.style.height = '80px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '8px';
+                    img.style.border = '2px solid #667eea';
+                    
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Projects management
+        function getProjects() {
+            const saved = localStorage.getItem('portfolioData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                return data.projects || defaultData.projects;
+            }
+            return defaultData.projects;
+        }
+
+        function saveProjects(projects) {
+            const currentData = JSON.parse(localStorage.getItem('portfolioData') || '{}');
+            currentData.projects = projects;
+            localStorage.setItem('portfolioData', JSON.stringify(currentData));
+        }
+
+        function renderProjects() {
+            const projects = getProjects();
+            const grid = document.getElementById('projectsGrid');
+            
+            grid.innerHTML = projects.map(project => `
+                <div class="project-card" data-category="${project.category}">
+                    <div class="project-image">
+                        ${project.images && project.images.length > 0 ? 
+                            `<img src="${project.images[0]}" alt="${project.title}">` :
+                            `${project.logo} ${project.title}`
+                        }
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category">${project.category}</div>
+                        <h3 class="project-title">${project.title}</h3>
+                        <p class="project-description">${project.description}</p>
+                        ${project.link ? `<a href="${project.link}" target="_blank" class="btn btn-primary">Ver Projeto</a>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddProject() {
+            currentProjectEdit = null;
+            document.getElementById('projectModalTitle').textContent = 'Adicionar Projeto';
+            document.getElementById('projectForm').reset();
+            document.getElementById('projectId').value = '';
+            document.getElementById('projectImagesPreview').innerHTML = '';
+            projectImages = [];
+            showModal('projectModal');
+        }
+
+        function editProject(id) {
+            const projects = getProjects();
+            const project = projects.find(p => p.id === id);
+            if (!project) return;
+
+            currentProjectEdit = project;
+            document.getElementById('projectModalTitle').textContent = 'Editar Projeto';
+            document.getElementById('projectId').value = project.id;
+            document.getElementById('projectTitle').value = project.title;
+            document.getElementById('projectCategory').value = project.category;
+            document.getElementById('projectDescription').value = project.description;
+            document.getElementById('projectLink').value = project.link || '';
+            document.getElementById('projectLogo').value = project.logo || '';
+            
+            // Load existing images
+            projectImages = project.images || [];
+            const preview = document.getElementById('projectImagesPreview');
+            preview.innerHTML = '';
+            
+            projectImages.forEach(image => {
+                const img = document.createElement('img');
+                img.src = image;
+                img.style.width = '80px';
+                img.style.height = '80px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '8px';
+                img.style.border = '2px solid #667eea';
+                preview.appendChild(img);
+            });
+            
+            showModal('projectModal');
+        }
+
+        function deleteProject(id) {
+            if (!confirm('Tem certeza que deseja excluir este projeto?')) return;
+            
+            const projects = getProjects();
+            const filteredProjects = projects.filter(p => p.id !== id);
+            saveProjects(filteredProjects);
+            renderProjects();
+        }
+
+        // Modal management
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Project filtering
+        function filterProjects(category) {
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            // Project form
+            document.getElementById('projectForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const projectData = {
+                    id: document.getElementById('projectId').value || Date.now(),
+                    title: document.getElementById('projectTitle').value,
+                    category: document.getElementById('projectCategory').value,
+                    description: document.getElementById('projectDescription').value,
+                    link: document.getElementById('projectLink').value,
+                    logo: document.getElementById('projectLogo').value || '🚀',
+                    images: projectImages
+                };
+
+                const projects = getProjects();
+                
+                if (currentProjectEdit) {
+                    const index = projects.findIndex(p => p.id == projectData.id);
+                    if (index !== -1) projects[index] = projectData;
+                } else {
+                    projects.push(projectData);
+                }
+
+                saveProjects(projects);
+                renderProjects();
+                closeModal('projectModal');
+                alert('Projeto salvo com sucesso!');
+            });
+
+            // Contact form
+            document.querySelector('.contact-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Mensagem enviada com sucesso! Em breve entrarei em contato.');
+                e.target.reset();
+            });
+
+            // Project filters
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterProjects(btn.dataset.filter);
+                });
+            });
+
+            // Image upload clicks
+            document.getElementById('heroImage').addEventListener('click', () => {
+                document.getElementById('heroImageInput').click();
+            });
+
+            document.getElementById('aboutImage').addEventListener('click', () => {
+                document.getElementById('aboutImageInput').click();
+            });
+
+            // Close modals on outside click
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            });
+
+            // Smooth scroll for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Check for admin access via URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                enableAdminMode();
+            }
+        }
+
+        function enableAdminMode() {
+            // Add edit capabilities
+            document.querySelectorAll('.editable').forEach(el => {
+                el.classList.add('editable');
+                el.addEventListener('click', handleEditClick);
+            });
+
+            document.querySelectorAll('.image-upload').forEach(el => {
+                el.classList.add('editable');
+            });
+
+            // Add project management buttons
+            renderProjectsWithAdmin();
+        }
+
+        function handleEditClick(e) {
+            if (e.target.classList.contains('editable')) {
+                const field = e.target.dataset.field;
+                const currentText = e.target.textContent;
+                const newText = prompt(`Editar ${field}:`, currentText);
+                
+                if (newText !== null && newText !== currentText) {
+                    e.target.textContent = newText;
+                    saveData();
+                }
+            }
+        }
+
+        function renderProjectsWithAdmin() {
+            const projects = getProjects();
+            const grid = document.getElementById('projectsGrid');
+            
+            grid.innerHTML = projects.map(project => `
+                <div class="project-card" data-category="${project.category}">
+                    <div class="project-image">
+                        ${project.images && project.images.length > 0 ? 
+                            `<img src="${project.images[0]}" alt="${project.title}">` :
+                            `${project.logo} ${project.title}`
+                        }
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category">${project.category}</div>
+                        <h3 class="project-title">${project.title}</h3>
+                        <p class="project-description">${project.description}</p>
+                        ${project.link ? `<a href="${project.link}" target="_blank" class="btn btn-primary">Ver Projeto</a>` : ''}
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-secondary" onclick="editProject(${project.id})" style="margin-right: 10px;">Editar</button>
+                            <button class="btn" onclick="deleteProject(${project.id})" style="background: #dc3545; color: white;">Excluir</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add button to add new projects
+            const addBtn = document.createElement('div');
+            addBtn.className = 'project-card';
+            addBtn.style.cursor = 'pointer';
+            addBtn.style.border = '2px dashed #667eea';
+            addBtn.innerHTML = `
+                <div class="project-image" style="background: rgba(102, 126, 234, 0.1);">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem;">+</div>
+                        <div>Adicionar Projeto</div>
+                    </div>
+                </div>
+            `;
+            addBtn.addEventListener('click', showAddProject);
+            grid.appendChild(addBtn);
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

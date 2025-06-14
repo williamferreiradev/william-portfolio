@@ -11,48 +11,117 @@
             box-sizing: border-box;
         }
 
+        // Services management
+        function loadServices() {
+            const data = getPortfolioData();
+            const services = data.services || defaultContent.services;
+            const list = document.getElementById('servicesList');
+            
+            if (services.length === 0) {
+                list.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #a0a0a0;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚙️</div>
+                        <h3>Nenhum serviço ainda</h3>
+                        <p>Clique em "Novo Serviço" para adicionar seu primeiro serviço</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = services.map(service => `
+                <div class="project-item">
+                    <div class="project-logo">
+                        ${service.icon && service.icon.startsWith('data:') ? 
+                            `<img src="${service.icon}" alt="${service.title}">` :
+                            (service.icon || '⚙️')
+                        }
+                    </div>
+                    <div class="project-info">
+                        <h4>${service.title}</h4>
+                        <div class="category">SERVIÇO</div>
+                        <div class="description">${service.description.substring(0, 100)}${service.description.length > 100 ? '...' : ''}</div>
+                        ${service.link ? `<a href="${service.link}" target="_blank" style="color: #667eea; font-size: 0.9rem; text-decoration: none;">🔗 ${service.cta}</a>` : `<span style="color: #667eea; font-size: 0.9rem;">🔗 ${service.cta}</span>`}
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-secondary" onclick="editService(${service.id})" title="Editar">✏️</button>
+                        <button class="btn btn-danger" onclick="deleteService(${service.id})" title="Excluir">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddService() {
+            currentServiceEdit = null;
+            serviceIcon = null;
+            
+            document.getElementById('serviceModalTitle').textContent = 'Adicionar Serviço';
+            document.getElementById('serviceForm').reset();
+            document.getElementById('serviceId').value = '';
+            document.getElementById('serviceIconPreview').innerHTML = '⚙️';
+            document.getElementById('serviceCta').value = 'Saiba Mais';
+            
+            showModal('serviceModal');
+        }
+
+        function editService(id) {
+            const data = getPortfolioData();
+            const services = data.services || defaultContent.services;
+            const service = services.find(s => s.id === id);
+            if (!service) return;
+
+            currentServiceEdit = service;
+            document.getElementById('serviceModalTitle').textContent = 'Editar Serviço';
+            document.getElementById('serviceId').value = service.id;
+            document.getElementById('serviceTitle').value = service.title;
+            document.getElementById('serviceDescription').value = service.description;
+            document.getElementById('serviceCta').value = service.cta || 'Saiba Mais';
+            document.getElementById('serviceLink').value = service.link || '';
+            document.getElementById('serviceIconEmoji').value = service.icon && !service.icon.startsWith('data:') ? service.icon : '';
+            
+            // Load icon
+            serviceIcon = service.icon;
+            const iconPreview = document.getElementById('serviceIconPreview');
+            if (service.icon && service.icon.startsWith('data:')) {
+                iconPreview.innerHTML = `<img src="${service.icon}" alt="Ícone">`;
+            } else {
+                iconPreview.innerHTML = service.icon || '⚙️';
+            }
+            
+            showModal('serviceModal');
+        }
+
+        function deleteService(id) {
+            const data = getPortfolioData();
+            const services = data.services || defaultContent.services;
+            const service = services.find(s => s.id === id);
+            
+            if (!confirm(`🗑️ Tem certeza que deseja excluir o serviço "${service?.title}"?`)) return;
+            
+            data.services = services.filter(s => s.id !== id);
+            savePortfolioData(data);
+            logActivity(`Serviço "${service?.title}" excluído`);
+            showNotification('🗑️ Serviço excluído com sucesso!', 'success');
+            loadServices();
+            loadOverviewData();
+        }
+
+        function handleServiceIconUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                compressImage(file, 64, 0.9).then(compressedIcon => {
+                    serviceIcon = compressedIcon;
+                    document.getElementById('serviceIconPreview').innerHTML = `<img src="${compressedIcon}" alt="Ícone">`;
+                    document.getElementById('serviceIconEmoji').value = '';
+                });
+            }
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0f0f23;
             color: #ffffff;
             min-height: 100vh;
         }
-
-        .field-group input,
-.field-group textarea {
-    width: 100%;
-    padding: 1rem 1.2rem;
-    border: 1.5px solid rgba(102, 126, 234, 0.3);
-    border-radius: 12px;
-    background: rgba(15, 15, 35, 0.85);
-    color: #ffffff;
-    font-size: 1rem;
-    transition: all 0.3s;
-    resize: vertical;
-    min-height: 45px;
-    backdrop-filter: blur(4px);
-}
-
-.field-group textarea {
-    min-height: 100px;
-    max-height: 300px;
-    line-height: 1.5;
-    overflow-y: auto;
-}
-
-.field-group input:focus,
-.field-group textarea:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-    transform: scale(1.01);
-}
-
-.field-group input::placeholder,
-.field-group textarea::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
 
         .container {
             max-width: 1200px;
@@ -958,9 +1027,10 @@
                 <button class="tab-btn active" onclick="switchTab('overview')">📊 Overview</button>
                 <button class="tab-btn" onclick="switchTab('content')">✏️ Conteúdo</button>
                 <button class="tab-btn" onclick="switchTab('projects')">🚀 Projetos</button>
+                <button class="tab-btn" onclick="switchTab('services')">⚙️ Serviços</button>
                 <button class="tab-btn" onclick="switchTab('images')">🖼️ Imagens</button>
                 <button class="tab-btn" onclick="switchTab('colors')">🎨 Design</button>
-                <button class="tab-btn" onclick="switchTab('settings')">⚙️ Configurações</button>
+                <button class="tab-btn" onclick="switchTab('settings')">🔧 Configurações</button>
             </div>
 
             <!-- Overview Tab -->
@@ -972,9 +1042,9 @@
                         <div class="stat-label">Projetos</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">📅</div>
-                        <div class="stat-value" id="lastUpdate">-</div>
-                        <div class="stat-label">Última Atualização</div>
+                        <div class="stat-icon">⚙️</div>
+                        <div class="stat-value" id="serviceCount">0</div>
+                        <div class="stat-label">Serviços</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">🖼️</div>
@@ -992,6 +1062,7 @@
                     <h3>🚀 Ações Rápidas</h3>
                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                         <button class="btn btn-primary" onclick="switchTab('projects'); setTimeout(showAddProject, 100);">➕ Adicionar Projeto</button>
+                        <button class="btn btn-primary" onclick="switchTab('services'); setTimeout(showAddService, 100);">⚙️ Adicionar Serviço</button>
                         <button class="btn btn-secondary" onclick="switchTab('content')">✏️ Editar Conteúdo</button>
                         <button class="btn btn-secondary" onclick="switchTab('images')">🖼️ Gerenciar Imagens</button>
                         <button class="btn btn-secondary" onclick="switchTab('colors')">🎨 Personalizar Design</button>
@@ -1030,6 +1101,19 @@
                     </div>
                     <div class="projects-list" id="projectsList">
                         <!-- Projects will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Tab -->
+            <div class="tab-content" id="servicesTab">
+                <div class="admin-card">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3>⚙️ Gerenciar Serviços</h3>
+                        <button class="btn btn-primary" onclick="showAddService()">➕ Novo Serviço</button>
+                    </div>
+                    <div class="services-list" id="servicesList">
+                        <!-- Services will be loaded here -->
                     </div>
                 </div>
             </div>
@@ -1182,6 +1266,11 @@
                             </button>
                             <p style="color: #dc3545; font-size: 0.9rem;">Remove todos os projetos</p>
                             
+                            <button class="btn btn-danger" onclick="clearServices()">
+                                ⚙️ Limpar Serviços
+                            </button>
+                            <p style="color: #dc3545; font-size: 0.9rem;">Remove todos os serviços</p>
+                            
                             <button class="btn btn-danger" onclick="clearAllData()">
                                 🗑️ Limpar Tudo
                             </button>
@@ -1200,6 +1289,65 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="serviceModalTitle">Adicionar Serviço</h3>
+                <button class="close-btn" onclick="closeModal('serviceModal')">&times;</button>
+            </div>
+            <form id="serviceForm">
+                <input type="hidden" id="serviceId">
+                
+                <div class="form-group">
+                    <label for="serviceTitle">🏷️ Título do Serviço</label>
+                    <input type="text" id="serviceTitle" placeholder="Ex: Desenvolvimento Mobile" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="serviceDescription">📋 Descrição</label>
+                    <textarea id="serviceDescription" rows="4" placeholder="Descreva o que este serviço oferece aos seus clientes..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>🎨 Ícone do Serviço</label>
+                    <div class="logo-upload" onclick="document.getElementById('serviceIconInput').click()">
+                        <input type="file" id="serviceIconInput" accept="image/*" style="display: none;" onchange="handleServiceIconUpload(event)">
+                        <div class="logo-preview" id="serviceIconPreview">
+                            ⚙️
+                        </div>
+                        <div class="logo-info">
+                            <div class="title">Clique para adicionar ícone</div>
+                            <div class="subtitle">Recomendado: 64x64px, PNG/JPG</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 0.5rem;">
+                        <input type="text" id="serviceIconEmoji" placeholder="Ou digite um emoji: ⚙️" style="width: 100%;">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="serviceCta">🔗 Texto do Botão</label>
+                    <input type="text" id="serviceCta" placeholder="Ex: Saiba Mais, Contratar Agora" value="Saiba Mais" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="serviceLink">🌐 Link do Serviço (opcional)</label>
+                    <input type="url" id="serviceLink" placeholder="https://seusite.com/servico">
+                </div>
+                
+                <div class="flex gap-2">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        💾 Salvar Serviço
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('serviceModal')">
+                        ❌ Cancelar
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -1293,8 +1441,10 @@
         // State
         let isLoggedIn = false;
         let currentProjectEdit = null;
+        let currentServiceEdit = null;
         let projectImages = [];
         let projectLogo = null;
+        let serviceIcon = null;
 
         // Default content structure
         const defaultContent = {
@@ -1335,6 +1485,32 @@
                     cta: "Saiba Mais"
                 }
             },
+            services: [
+                {
+                    id: 1,
+                    title: "Desenvolvimento Web",
+                    description: "Criação de sites, aplicações web e e-commerce com tecnologias modernas e design responsivo para proporcionar a melhor experiência aos usuários.",
+                    icon: "🌐",
+                    cta: "Saiba Mais",
+                    link: "#contact"
+                },
+                {
+                    id: 2,
+                    title: "Automação com IA",
+                    description: "Desenvolvimento de chatbots inteligentes e fluxos de atendimento automatizados com IA que entendem linguagem natural, imagens e documentos.",
+                    icon: "🤖",
+                    cta: "Saiba Mais",
+                    link: "#contact"
+                },
+                {
+                    id: 3,
+                    title: "Aplicativos Personalizados",
+                    description: "Criação de aplicativos móveis e sistemas personalizados que atendem às necessidades específicas do seu negócio com design moderno e funcional.",
+                    icon: "📱",
+                    cta: "Saiba Mais",
+                    link: "#contact"
+                }
+            ],
             contact: {
                 title: "Vamos Conversar",
                 description: "Estou interessado em novos projetos de desenvolvimento web, automatização com IA e criação de sistemas personalizados. Se você tem uma ideia ou projeto em mente, entre em contato para discutirmos como posso ajudar a transformá-la em realidade.",
@@ -1421,6 +1597,7 @@
             document.getElementById('adminUser').style.display = 'flex';
             loadContent();
             loadProjects();
+            loadServices();
             loadImages();
             loadOverviewData();
             loadColors();
@@ -1439,6 +1616,7 @@
             document.getElementById(tabName + 'Tab').classList.add('active');
             
             if (tabName === 'projects') loadProjects();
+            if (tabName === 'services') loadServices();
             if (tabName === 'images') loadImages();
             if (tabName === 'overview') loadOverviewData();
             if (tabName === 'colors') loadColors();
@@ -1448,13 +1626,10 @@
         function loadOverviewData() {
             const data = getPortfolioData();
             const projects = data.projects || [];
+            const services = data.services || defaultContent.services;
             
             document.getElementById('projectCount').textContent = projects.length;
-            
-            const lastUpdate = localStorage.getItem('lastUpdate');
-            if (lastUpdate) {
-                document.getElementById('lastUpdate').textContent = new Date(lastUpdate).toLocaleDateString('pt-BR');
-            }
+            document.getElementById('serviceCount').textContent = services.length;
             
             let imageCount = 0;
             if (localStorage.getItem('heroImage')) imageCount++;
@@ -1462,6 +1637,9 @@
             projects.forEach(p => {
                 if (p.images && p.images.length > 0) imageCount += p.images.length;
                 if (p.logo && p.logo.startsWith('data:')) imageCount++;
+            });
+            services.forEach(s => {
+                if (s.icon && s.icon.startsWith('data:')) imageCount++;
             });
             document.getElementById('imageCount').textContent = imageCount;
         }
@@ -1983,13 +2161,22 @@
                     if (project.images) project.images = [];
                     if (project.logo && project.logo.startsWith('data:')) project.logo = '🚀';
                 });
-                savePortfolioData(data);
             }
+            
+            // Clear service icons
+            if (data.services) {
+                data.services.forEach(service => {
+                    if (service.icon && service.icon.startsWith('data:')) service.icon = '⚙️';
+                });
+            }
+            
+            savePortfolioData(data);
             
             logActivity('Todas as imagens removidas');
             showNotification('🖼️ Todas as imagens foram removidas!', 'success');
             loadImages();
             loadProjects();
+            loadServices();
             loadOverviewData();
         }
 
@@ -2003,6 +2190,19 @@
             logActivity('Todos os projetos removidos');
             showNotification('🚀 Todos os projetos foram removidos!', 'success');
             loadProjects();
+            loadOverviewData();
+        }
+
+        function clearServices() {
+            if (!confirm('⚙️ Tem certeza que deseja remover TODOS os serviços?')) return;
+            
+            const data = getPortfolioData();
+            data.services = [];
+            savePortfolioData(data);
+            
+            logActivity('Todos os serviços removidos');
+            showNotification('⚙️ Todos os serviços foram removidos!', 'success');
+            loadServices();
             loadOverviewData();
         }
 
@@ -2164,6 +2364,47 @@
                         showNotification('❌ Espaço insuficiente! Reduza o tamanho das imagens.', 'error');
                     } else {
                         showNotification('❌ Erro ao salvar projeto!', 'error');
+                    }
+                }
+            });
+            
+            // Service form
+            document.getElementById('serviceForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                try {
+                    const serviceData = {
+                        id: document.getElementById('serviceId').value || Date.now(),
+                        title: document.getElementById('serviceTitle').value,
+                        description: document.getElementById('serviceDescription').value,
+                        icon: serviceIcon || document.getElementById('serviceIconEmoji').value || '⚙️',
+                        cta: document.getElementById('serviceCta').value,
+                        link: document.getElementById('serviceLink').value
+                    };
+
+                    const data = getPortfolioData();
+                    const services = data.services || defaultContent.services;
+                    
+                    if (currentServiceEdit) {
+                        const index = services.findIndex(s => s.id == serviceData.id);
+                        if (index !== -1) services[index] = serviceData;
+                        logActivity(`Serviço "${serviceData.title}" editado`);
+                    } else {
+                        services.push(serviceData);
+                        logActivity(`Serviço "${serviceData.title}" adicionado`);
+                    }
+                    
+                    data.services = services;
+                    savePortfolioData(data);
+                    closeModal('serviceModal');
+                    loadServices();
+                    loadOverviewData();
+                    showNotification('✅ Serviço salvo com sucesso!', 'success');
+                } catch (error) {
+                    if (error.name === 'QuotaExceededError') {
+                        showNotification('❌ Espaço insuficiente! Reduza o tamanho do ícone.', 'error');
+                    } else {
+                        showNotification('❌ Erro ao salvar serviço!', 'error');
                     }
                 }
             });

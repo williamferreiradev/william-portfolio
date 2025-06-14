@@ -18,6 +18,41 @@
             min-height: 100vh;
         }
 
+        .field-group input,
+.field-group textarea {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border: 1.5px solid rgba(102, 126, 234, 0.3);
+    border-radius: 12px;
+    background: rgba(15, 15, 35, 0.85);
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s;
+    resize: vertical;
+    min-height: 45px;
+    backdrop-filter: blur(4px);
+}
+
+.field-group textarea {
+    min-height: 100px;
+    max-height: 300px;
+    line-height: 1.5;
+    overflow-y: auto;
+}
+
+.field-group input:focus,
+.field-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    transform: scale(1.01);
+}
+
+.field-group input::placeholder,
+.field-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 
         .container {
             max-width: 1200px;
